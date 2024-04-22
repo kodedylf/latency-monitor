@@ -1,4 +1,4 @@
-Monitor your Internet latency using ping
+# Monitor your Internet latency using ping
 
 I'm having some weird latency spikes on my Internet connection and this project is meant to help me figure out if there's a pattern to when it happens.
 
