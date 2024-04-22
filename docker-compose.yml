@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  collector:
+    build: ./collector
+    volumes:
+      - ./ping.log:/var/ping.log
+
+  api:
+    build: ./api
+    ports:
+      - 8080:8080
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    volumes:
+      - ./ping.log:/var/ping.log

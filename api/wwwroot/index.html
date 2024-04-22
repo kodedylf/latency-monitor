@@ -1,0 +1,47 @@
+<div>
+  <canvas id="myChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+
+<script>
+const config = {
+  type: "line",
+  data: {
+    labels: [],
+    datasets: [{
+      data: [], // Set initially to empty data
+      label: "Latency",
+      borderColor: "#3e95cd",
+      fill: false
+    }]
+  },
+  options: {
+    animation: false,
+    scales: {
+      x: {
+        type: 'timeseries',
+      },
+      y: {
+        suggestedMax: 1000,
+      },
+    }
+  }
+};
+
+const ctx = document.getElementById('myChart');
+const pingChart = new Chart(ctx, config);
+
+const fetchPingDataAndUpdateChart = () => fetch("/api/data")
+  .then(response => response.json())
+  .then(responseData => 
+  {
+    const chartData = responseData.map(ping => ({ x: ping.time, y: ping.ping }));
+    pingChart.data.datasets[0].data = chartData;
+    pingChart.update();
+    setTimeout(fetchPingDataAndUpdateChart, 5000);
+  });
+
+fetchPingDataAndUpdateChart();
+</script>
